@@ -2,21 +2,26 @@ package com.shifang.layoutmanagerlearning
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 import com.shifang.layoutmanagerlearning.databinding.ActivityMainBinding
 import com.shifang.layoutmanagerlearning.databinding.ItemTestBinding
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
-    private val inflate by lazy { ActivityMainBinding.inflate (layoutInflater) }
-    val array by lazy { arrayOf(1,2,10, 4, 6, 145, 12, 1516,12,33,44,556,78,123,45345,123123,34563456,123412,2345345234123,12312312125198) }
+    private val inflate by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    val array by lazy { arrayOf(1, 2, 10, 4, 6, 145, 12, 1516, 12, 33, 44, 556, 78, 123, 45345, 123123L, 1111) }
     private val adapter by lazy { CustomAdapter(array) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(inflate.root)
+        Logger.addLogAdapter(AndroidLogAdapter())
         val adapter = adapter
         inflate.rv.layoutManager = LinearLayoutManager(this)
         inflate.rv.adapter = adapter
@@ -44,5 +49,10 @@ class MainActivity : AppCompatActivity() {
         fun bind(txt: String) {
             item.tvText.text = txt
         }
+    }
+
+    fun refresh(view: View) {
+        array[0] = (Math.random() * 100).toLong()
+        adapter.notifyDataSetChanged()
     }
 }
